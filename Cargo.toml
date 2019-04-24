@@ -1,0 +1,8 @@
+[package]
+name = "rsync-helper"
+version = "0.1.0"
+authors = ["yoshizawa.takayuki <yoshizawa.takayuki@linecorp.com>"]
+edition = "2018"
+
+[dependencies]
+yaml-rust = "0.4.3"
