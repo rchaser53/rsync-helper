@@ -1,5 +1,5 @@
 extern crate yaml_rust;
-use yaml_rust::{Yaml, YamlEmitter, YamlLoader};
+use yaml_rust::{Yaml, YamlLoader};
 
 use std::process::Command;
 use std::{fs, str};
@@ -8,18 +8,12 @@ const YML_PATH: &'static str = "rsync.config.yml";
 
 type StaticError = Box<dyn std::error::Error + 'static>;
 fn main() -> Result<(), StaticError> {
+    let config = extract_config(YML_PATH);
     let output = Command::new("sh")
         .arg("-c")
         .arg("echo hello")
         .output()
         .expect("failed to execute process");
-
-    // let hello = output.stdout;
-    // let hello_str = str::from_utf8(&hello)?;
-
-    let config = extract_config(YML_PATH);
-    dbg!(config);
-
     Ok(())
 }
 
@@ -30,8 +24,11 @@ struct YmlConfig {
     ssh_key_path: String,
 }
 
-fn extract_config(yml_path: &str) -> Result<YmlConfig, StaticError> {
-    let yml_str = fs::read_to_string(yml_path).expect(&format!("should exist {}", yml_path));
+fn extract_config<T: AsRef<str>>(yml_path: T) -> Result<YmlConfig, StaticError>
+where
+    T: std::convert::AsRef<std::path::Path> + std::fmt::Display,
+{
+    let yml_str = fs::read_to_string(&yml_path).expect(&format!("should exist {}", yml_path));
 
     let docs = YamlLoader::load_from_str(&yml_str)?;
     let doc = &docs[0];
