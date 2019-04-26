@@ -1,3 +1,7 @@
-- nyan
-- chu
-
+rsync_path:
+  aaa
+ignored: 
+  - nyan
+  - myan
+ssh_key_path:
+  bbb
