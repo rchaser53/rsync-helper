@@ -1,6 +1,12 @@
+extern crate termion;
 extern crate yaml_rust;
+
+use termion::event::Key;
+use termion::input::TermRead;
+use termion::raw::IntoRawMode;
 use yaml_rust::{Yaml, YamlLoader};
 
+use std::io::{stdin, stdout, Write};
 use std::process::Command;
 use std::{fs, str};
 
@@ -14,6 +20,19 @@ fn main() -> Result<(), StaticError> {
         .arg("echo hello")
         .output()
         .expect("failed to execute process");
+
+    let stdin = stdin();
+    let mut stdout = stdout().into_raw_mode().unwrap();
+    stdout.flush().unwrap();
+
+    for c in stdin.keys() {
+        match c.unwrap() {
+            Key::Char('q') => break,
+            _ => {}
+        }
+        stdout.flush().unwrap();
+    }
+
     Ok(())
 }
 
