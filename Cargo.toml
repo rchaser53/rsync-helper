@@ -5,5 +5,6 @@ authors = ["yoshizawa.takayuki <yoshizawa.takayuki@linecorp.com>"]
 edition = "2018"
 
 [dependencies]
+notify = "4.0.10"
 yaml-rust = "0.4.3"
 termion = "1.5.2"

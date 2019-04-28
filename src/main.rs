@@ -1,10 +1,15 @@
 extern crate termion;
+// extern crate notify;
 extern crate yaml_rust;
 
 use termion::event::Key;
 use termion::input::TermRead;
 use termion::raw::IntoRawMode;
 use yaml_rust::{Yaml, YamlLoader};
+
+// use notify::{RecommendedWatcher, Watcher, RecursiveMode};
+// use std::sync::mpsc::channel;
+// use std::time::Duration;
 
 use std::io::{stdin, stdout, Write};
 use std::process::Command;
@@ -15,9 +20,8 @@ const YML_PATH: &'static str = "rsync.config.yml";
 type StaticError = Box<dyn std::error::Error + 'static>;
 fn main() -> Result<(), StaticError> {
     let config = extract_config(YML_PATH);
-    let output = Command::new("sh")
-        .arg("-c")
-        .arg("echo hello")
+    let output = Command::new("git")
+        .arg("status")
         .output()
         .expect("failed to execute process");
 
@@ -64,3 +68,13 @@ where
         ssh_key_path: ssh_key_path.into(),
     })
 }
+
+// let (tx, rx) = channel();
+// let mut watcher: RecommendedWatcher = r#try!(Watcher::new(tx, Duration::from_secs(2)));
+// r#try!(watcher.watch("./.git/index", RecursiveMode::Recursive));
+// loop {
+//     match rx.recv() {
+//         Ok(event) => println!("{:?}", event),
+//         Err(e) => println!("watch error: {:?}", e),
+//     }
+// }
